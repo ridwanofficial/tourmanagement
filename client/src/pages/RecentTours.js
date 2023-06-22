@@ -3,6 +3,7 @@ import { styled } from '@mui/system';
 import { Container, Box, Grid, Typography, TextField, Card, CardContent, CardMedia, IconButton } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import TourCard from '../components/TourCard';
+import { mockTours } from '../constant';
 
 
 const RecentTours = () => {
@@ -10,29 +11,7 @@ const RecentTours = () => {
 
   const [selectedDate, setSelectedDate] = useState(null);
 
-const mockTours = [
-  {
-    id: 1,
-    name: 'ভ্রমণ পর্যটন - ঢাকা টুর',
-    summary: 'ঢাকা শহরের পরিমাণগুলো সীমাবদ্ধ না থাকে। এখানে এমন কোনো বৌদ্ধিক নগরী নেই যেখানে প্রতিবেশীরা নিজস্ব মতে জীবনযাত্রা চলাচল না করে অন্যের মতে চলে।',
-    date: '2023-07-01',
-    location: 'ঢাকা',
-    image: 'https://via.placeholder.com/400x225',
-    amount: '১০০০',
-    place: 'ঢাকা',
-  },
-  {
-    id: 2,
-    name: 'সুন্দরবন জাফলং',
-    summary: 'বাংলাদেশের সুন্দরবন অন্যতম বিশেষ স্থান। বিভিন্ন প্রজাতির হরিন ও শাপলা পাখি বা রাঙ্গামাটি মতো রঙিন পাখির জন্য এই জাফলং অনুসন্ধানগুলি খুবই প্রশংসিত হয়ে ওঠে।',
-    date: '2023-07-02',
-    location: 'সুন্দরবন',
-    image: 'https://via.placeholder.com/400x225',
-    amount: '১৫০০',
-    place: 'সুন্দরবন',
-  },
-  // Add more tour objects as needed
-];
+
 
 
   const handlePrevDay = () => {

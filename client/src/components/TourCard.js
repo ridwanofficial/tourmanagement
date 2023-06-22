@@ -1,11 +1,12 @@
 import React from 'react';
 import { styled } from '@mui/system';
-import { Card, CardContent, CardMedia, Box, Typography, IconButton,CardActions,Button } from '@mui/material';
+import { Card, CardContent, CardMedia, Box, Typography, IconButton, CardActions, Button } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 import { useNavigate } from "react-router-dom";
+
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -20,17 +21,18 @@ const StyledCardContent = styled(CardContent)(({ theme }) => ({
 }));
 
 const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
-//   height: 0,
+  //   height: 0,
   paddingTop: '56.25%', // 16:9 aspect ratio
 }));
 
 const TourCard = ({ tour }) => {
-    const history = useNavigate();
-    const { name, summary, date, location, image, amount, place } = tour;
-    
-    const navigateToTourDetails = tourId => {
-       history.push(`/tour-details/${tourId}`);
-     };
+  const history = useNavigate();
+  const { name, summary, date, location, image, amount, place, guideInfo, returnTime, departureTime } = tour;
+
+  const navigateToTourDetails = (tourId) => {
+    history(`/tour-details/${tourId}`);
+  };
+
   return (
     <StyledCard>
       <CardMedia component="img" image={image} alt={name} />
@@ -62,12 +64,21 @@ const TourCard = ({ tour }) => {
             {place}
           </Typography>
         </Box>
+        <Box display="flex" alignItems="center" marginTop={1}>
+          <Typography variant="body2">Guide: {guideInfo.name}</Typography>
+        </Box>
+        <Box display="flex" alignItems="center" marginTop={1}>
+          <Typography variant="body2">Return Time: {returnTime}</Typography>
+        </Box>
+        <Box display="flex" alignItems="center" marginTop={1}>
+          <Typography variant="body2">Departure Time: {departureTime}</Typography>
+        </Box>
       </StyledCardContent>
-       <CardActions>
-                  <Button variant="contained" onClick={() => navigateToTourDetails(tour.id)}>
-                    View Details
-                  </Button>
-                </CardActions>
+      <CardActions>
+        <Button variant="contained" onClick={() => navigateToTourDetails(tour.id)}>
+          View Details
+        </Button>
+      </CardActions>
     </StyledCard>
   );
 };

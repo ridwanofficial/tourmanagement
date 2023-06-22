@@ -12,7 +12,7 @@ function App() {
         <Sidebar />
         <Routes>
           <Route path="/" element={<RecentTours />} />
-          <Route path="/tours/:id" element={<TourDetails />} />
+          <Route path="/tour-details/:id" element={<TourDetails />} />
         </Routes>
       </div>
     </BrowserRouter>
