@@ -1,4 +1,5 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import {
   Card,
@@ -15,6 +16,9 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 
 import { useNavigate } from 'react-router-dom'
+import { OpenStreetMapProvider } from 'leaflet-geosearch'
+
+const provider = new OpenStreetMapProvider()
 
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -43,11 +47,32 @@ const TourCard = ({ tour }) => {
     location,
     image,
     amount,
+    boardingPointLocation,
     place,
     guideInfo,
     returnTime,
-    departureTime
+    departureTime,
+    capacity,
+    bookingPerson
   } = tour
+  const remainingAvailability = capacity - bookingPerson
+  const [address, setAddress] = useState('')
+  useEffect(() => {
+    const getAddress = async () => {
+      try {
+        const response = await axios.get(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${tour.boardingPointLocation.lat}&lon=${tour.boardingPointLocation.lng}`
+        )
+        if (response.data && response.data.display_name) {
+          setAddress(response.data.display_name)
+        }
+      } catch (error) {
+        console.error('Error retrieving address:', error)
+      }
+    }
+
+    getAddress()
+  }, [tour.boardingPointLocation])
 
   const navigateToTourDetails = tourId => {
     navigate(`/tour-details/${tourId}`)
@@ -89,6 +114,13 @@ const TourCard = ({ tour }) => {
             {place}
           </Typography>
         </Box>
+        <Typography variant='body1'>Capacity: {capacity}</Typography>
+        <Typography variant='body1'>
+          Booking Persons: {bookingPerson}
+        </Typography>
+        <Typography variant='body1'>
+          Remaining Availability: {remainingAvailability}
+        </Typography>
         <Box display='flex' alignItems='center' marginTop={1}>
           <Typography variant='body2'>Guide: {guideInfo.name}</Typography>
         </Box>
@@ -100,6 +132,10 @@ const TourCard = ({ tour }) => {
             Departure Time: {departureTime}
           </Typography>
         </Box>
+        <p>
+          <span style={{ fontWeight: '700' }}>Boarding Point:</span>
+          {address}
+        </p>
       </StyledCardContent>
       <CardActions>
         <Button

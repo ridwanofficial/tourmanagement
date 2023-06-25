@@ -6,16 +6,32 @@ import {
   Grid,
   Typography,
   TextField,
-  Card,
-  CardContent,
-  CardMedia,
-  IconButton
+  Autocomplete,
+  IconButton,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select
 } from '@mui/material'
 import { ChevronLeft, ChevronRight } from '@mui/icons-material'
 import TourCard from '../components/TourCard'
 import { mockTours } from '../constant'
+import ChooseBoardingPoint from '../components/ChooseBoardingPoint'
 
 const RecentTours = () => {
+  const [searchValue, setSearchValue] = useState(null)
+  const [sortValue, setSortValue] = useState('')
+
+  const searchOptions = [
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Option 3', value: 'option3' }
+    // Add more options as needed
+  ]
+  const handleSearchChange = (event, value) => {
+    setSearchValue(value)
+  }
+
   const [selectedDate, setSelectedDate] = useState(null)
 
   const handlePrevDay = () => {
@@ -44,6 +60,14 @@ const RecentTours = () => {
     const selectedDate = e.target.value
     setSelectedDate(selectedDate)
   }
+  const handleSort = tours => {
+    if (sortValue === 'asc') {
+      return tours.sort((a, b) => a.price - b.price)
+    } else if (sortValue === 'desc') {
+      return tours.sort((a, b) => b.price - a.price)
+    }
+    return tours
+  }
 
   return (
     <div className='layout'>
@@ -52,19 +76,45 @@ const RecentTours = () => {
           <Typography variant='h4' gutterBottom>
             Recent Tours
           </Typography>
-          <Box display='flex' alignItems='center' marginBottom={2}>
-            <IconButton onClick={handlePrevDay}>
-              <ChevronLeft />
-            </IconButton>
-            <TextField
-              type='date'
-              value={selectedDate || ''}
-              onChange={handleDateChange}
-            />
-            <IconButton onClick={handleNextDay}>
-              <ChevronRight />
-            </IconButton>
-          </Box>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box display='flex' alignItems='center' marginBottom={2}>
+              <IconButton onClick={handlePrevDay}>
+                <ChevronLeft />
+              </IconButton>
+              <TextField
+                type='date'
+                value={selectedDate || ''}
+                onChange={handleDateChange}
+              />
+              <IconButton onClick={handleNextDay}>
+                <ChevronRight />
+              </IconButton>
+            </Box>
+            <div style={{ width: '200px' }}>
+              <Autocomplete
+                options={searchOptions}
+                getOptionLabel={option => option.label}
+                value={searchValue}
+                onChange={handleSearchChange}
+                renderInput={params => (
+                  <TextField {...params} label='Search' variant='outlined' />
+                )}
+              />
+            </div>
+            <div>
+              <FormControl style={{ width: '200px' }}>
+                <InputLabel>Sort By Price</InputLabel>
+                <Select
+                  value={sortValue}
+                  onChange={event => setSortValue(event.target.value)}
+                >
+                  <MenuItem value=''>None</MenuItem>
+                  <MenuItem value='asc'>Low to High</MenuItem>
+                  <MenuItem value='desc'>High to Low</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          </div>
           <Grid container spacing={2}>
             {filteredTours.map(tour => (
               <Grid item key={tour.id} xs={12} sm={6} md={4}>

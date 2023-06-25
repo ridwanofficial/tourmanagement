@@ -5,6 +5,7 @@ import 'react-image-gallery/styles/css/image-gallery.css'
 import { Grid } from '@mui/material'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css' // Import the styles
+import BoardingLocation from '../components/BoardingLocation'
 
 const TourDetails = () => {
   const { id } = useParams()
@@ -22,6 +23,14 @@ const TourDetails = () => {
         const mockTour = {
           id: tourId,
           name: `Tour ${tourId}`,
+          capacity: 100,
+          bookingPerson: 10,
+          remainingAvailability: 90,
+          boardingPointLocation: {
+            lat: 23.723404, // Sample latitude coordinate
+            lng: 90.41305
+            // Sample longitude coordinate
+          },
           duration: '5 days',
           itinerary: 'Day 1: Lorem ipsum dolor sit amet...',
           pricing: '$500 per person',
@@ -34,9 +43,9 @@ const TourDetails = () => {
           returnTime: '6:00 PM',
           departureTime: '9:00 AM',
           imageUrls: [
-            'https://via.placeholder.com/200x400',
-            'https://via.placeholder.com/200x400',
-            'https://via.placeholder.com/800x600'
+            'https://picsum.photos/seed/picsum/800/600',
+            'https://picsum.photos/seed/picsum/800/600',
+            'https://picsum.photos/seed/picsum/800/600'
           ]
         }
 
@@ -59,10 +68,10 @@ const TourDetails = () => {
               items={tour.imageUrls.map(url => ({
                 original: url,
                 thumbnail: url,
-                originalHeight: 300
+                thumbnailHeight: '40px'
               }))}
               showFullscreenButton={true}
-              showPlayButton={false}
+              showPlayButton={true}
               style={{ objectFit: 'cover', maxHeight: '50vh' }}
             />
           </Grid>
@@ -83,10 +92,8 @@ const TourDetails = () => {
                   >
                     Additional Info:
                   </h3>
-                  
-                    {tour.additionalInfo}
-                   
-                  
+
+                  {tour.additionalInfo}
                 </Grid>
               </p>
               <p style={{ fontStyle: 'italic' }}>{tour.additionalInfo}</p>
@@ -99,11 +106,22 @@ const TourDetails = () => {
               >
                 Guide: {tour.guideInfo.name} ({tour.guideInfo.contact})
               </p>
+              <p variant='body1'>Capacity: {tour.capacity}</p>
+              <p variant='body1'>Booking Persons: {tour.bookingPerson}</p>
+              <p variant='body1'>
+                Remaining Availability: {tour.remainingAvailability}
+              </p>
               <p style={{ fontWeight: 'bold' }}>
                 Return Time: {tour.returnTime}
               </p>
               <p style={{ fontWeight: 'bold' }}>
                 Departure Time: {tour.departureTime}
+              </p>
+              <p style={{ fontWeight: 'bold' }}>
+                boarding point:
+                <BoardingLocation
+                  boardingPointLocation={tour.boardingPointLocation}
+                />
               </p>
             </Grid>
           </Grid>
