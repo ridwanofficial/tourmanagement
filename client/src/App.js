@@ -10,6 +10,8 @@ import SingleTour from './pages/SingleTour'
 import { TOUR_DETAILS_CONST } from './constant'
 import TourForm from './components/admin/TourForm'
 import TourList from './components/admin/TourList'
+import GuideList from './components/admin/GuideList'
+import GuideForm from './components/admin/GuideForm'
 
 function App () {
   return (
@@ -21,21 +23,31 @@ function App () {
           <Route path='/tour/:id' element={<SingleTour />} />
           <Route path='/admin' element={<Admin />} />
           <Route exact path={`admin/tours`} element={<TourList />} />
+          <Route exact path={`admin/guides`} element={<GuideList />} />
           <Route
             exact
             path={`admin/tour-details`}
             element={<TourDetailsList />}
           />
           <Route
-            path={`/tour-details/:id/edit`}
+            exact
+            path={`admin/tour-details`}
+            element={<TourDetailsList />}
+          />
+          <Route
+            path={`/admin/tour-details/:id/edit`}
             element={<EditTourDetailsForm mode={TOUR_DETAILS_CONST.EDIT} />}
           />
           <Route
-            path={`/tour-details/:id`}
+            path={`/admin/guides/:id/edit`}
+            element={<GuideForm mode={TOUR_DETAILS_CONST.EDIT} />}
+          />
+          <Route
+            path={`/admin/tour-details/:id`}
             element={<EditTourDetailsForm mode={TOUR_DETAILS_CONST.VIEW} />}
           />
           <Route
-            path={`/create-tour-details`}
+            path={`/admin/create-tour-details`}
             element={<EditTourDetailsForm mode={TOUR_DETAILS_CONST.NEW} />}
           />
           <Route

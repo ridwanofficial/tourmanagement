@@ -30,8 +30,6 @@ router.get('/getTourById/:id', (req, res) => {
       res.status(500).json({ error: 'Failed to get tour details' })
     })
 })
-
-// Get tour details by ID
 router.get('/getAllTour', (req, res) => {
   sqlConnection()
     .then(pool => {
@@ -55,6 +53,75 @@ router.get('/getAllTour', (req, res) => {
       res.status(500).json({ error: 'Failed to get tour details' })
     })
 })
+
+// Get tour details by ID
+router.get('/getAllGuides', (req, res) => {
+  sqlConnection()
+  sqlConnection()
+    .then(pool => {
+      return pool.request().query(`
+       select g.id,p.name,p.email,p.contactNumber FROM guides AS g
+        INNER JOIN persons AS p ON g.id = p.id
+      `)
+    })
+    .then(result => {
+      const tourDetails = result.recordset
+      res.json(tourDetails)
+    })
+    .catch(err => {
+      console.error('Failed to get tour details:', err)
+      res.status(500).json({ error: 'Failed to get tour details' })
+    })
+})
+router.get('/getGuideById/:id', (req, res) => {
+  const tourId = req.params.id
+
+  sqlConnection()
+    .then(pool => {
+      return pool.request().input('tourId', sql.Int, tourId).query(`
+       select g.id,p.name,p.email,p.contactNumber FROM guides AS g
+        INNER JOIN persons AS p ON g.id = p.id
+        where g.id = @tourId
+      `)
+    })
+    .then(result => {
+      const tourDetails = result.recordset
+      res.json(tourDetails)
+    })
+    .catch(err => {
+      console.error('Failed to get tour details:', err)
+      res.status(500).json({ error: 'Failed to get tour details' })
+    })
+})
+router.post('/updateGuide/:id', (req, res) => {
+  const guideId = req.params.id
+  const { name, email, contactNumber } = req.body
+
+  sqlConnection()
+    .then(pool => {
+      return pool
+        .request()
+        .input('guideId', sql.Int, guideId)
+        .input('name', sql.VarChar, name)
+        .input('email', sql.VarChar, email)
+        .input('contactNumber', sql.VarChar, contactNumber)
+        .query(`
+          UPDATE persons
+        SET name = @name, email = @email, contactNumber = @contactNumber
+        FROM guides AS g
+        WHERE persons.id = g.personId
+        AND g.id = @guideId;
+          `)
+    })
+    .then(() => {
+      res.status(200).json({ message: 'success' })
+    })
+    .catch(err => {
+      console.error('Failed to update guide:', err)
+      res.status(500).json({ error: 'Failed to update guide' })
+    })
+})
+;``
 
 // update a tours
 router.post('/updateTour/:id', (req, res) => {

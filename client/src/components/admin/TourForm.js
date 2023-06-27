@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
+  getAllGuides,
   getAllTourDetails,
   getAllTours,
   getTourById,
@@ -13,6 +14,7 @@ const TourForm = () => {
   const [tourId, setTourId] = useState(1)
   const [tourData, setTourData] = useState([])
   const [tourDetailsData, setDetailsTourData] = useState([])
+  const [guideData, setGuideData] = useState([])
   const [formValues, setFormValues] = useState({
     date: '',
     capacity: 0,
@@ -34,12 +36,16 @@ const TourForm = () => {
       setTourData(data[0])
       setFormValues(prevValues => ({
         ...prevValues,
+        ...data[0],
         tourDetailsId: data[0].tourId,
         date: formatDate(new Date(data[0].date))
       }))
     })
     getAllTourDetails().then(data => {
       setDetailsTourData(data)
+    })
+    getAllGuides().then(data => {
+      setGuideData(data)
     })
   }, [])
 
@@ -50,7 +56,8 @@ const TourForm = () => {
     updateTour(tourId, {
       ...formValues,
       tourDetailsId: parseInt(formValues.tourDetailsId),
-      guideId: 2
+      guideId: parseInt(formValues.guideId),
+      capacity: parseInt(formValues.capacity)
     })
       .then(() => {
         // Handle success
@@ -106,17 +113,31 @@ const TourForm = () => {
         />
       </label>
 
+      <label>
+        Guide:
+        <select
+          name='guideId'
+          value={formValues.guideId}
+          onChange={handleInputChange}
+        >
+          {guideData.map(guide => (
+            <option key={guide.id} value={parseInt(guide.id)}>
+              {guide.name}
+            </option>
+          ))}
+        </select>
+      </label>
       {/* Add more input fields for other form values */}
       <label>
         Tour Details:
         <select
           typeof='number'
-          name='tourDetailsId'
+          name='guideId'
           value={formValues.tourDetailsId}
           onChange={handleInputChange}
         >
           {tourDetailsData.map(detail => (
-            <option key={detail.id} value={parseInt(detail.id)}>
+            <option key={detail.guideId} value={parseInt(detail.guideId)}>
               {detail.name}
             </option>
           ))}

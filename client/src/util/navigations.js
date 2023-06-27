@@ -1,8 +1,11 @@
 const navigateToTourDetails = (navigate, tourId) => {
-  navigate(`/tour-details/${tourId}`)
+  navigate(`/admin/tour-details/${tourId}`)
 }
 const navigateToTourDetailsEdit = (navigate, tourId) => {
-  navigate(`/tour-details/${tourId}/edit`)
+  navigate(`/admin/tour-details/${tourId}/edit`)
+}
+const navigateToGuidesEdit = (navigate, guideId) => {
+  navigate(`/admin/guides/${guideId}/edit`)
 }
 
 const navigateToTourInfo = (navigate, tourId) => {
@@ -22,5 +25,6 @@ export {
   navigateToTourDetailsEdit,
   navigateToTourInfo,
   navigateToTourEdit,
+  navigateToGuidesEdit,
   navigateToCreateTourDetails
 }

@@ -43,3 +43,11 @@ export const updateTour = (id, body) =>
     postMethod: true,
     body: body
   })
+export const updateGuide = (id, body) =>
+  getClient(`${RootAddress}/updateGuide/${id}`, {
+    postMethod: true,
+    body: body
+  })
+
+export const getAllGuides = () => getClient(`${RootAddress}/getAllGuides`)
+export const getGuideById = id => getClient(`${RootAddress}/getGuideById/${id}`)

@@ -19,7 +19,11 @@ import { useNavigate } from 'react-router-dom'
 import { OpenStreetMapProvider } from 'leaflet-geosearch'
 import { Dialog, DialogTitle, DialogContent } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { navigateToTourEdit, navigateToTourInfo } from '../util/navigations'
+import {
+  navigateToTourDetails,
+  navigateToTourEdit,
+  navigateToTourInfo
+} from '../util/navigations'
 
 const provider = new OpenStreetMapProvider()
 
@@ -87,6 +91,10 @@ const TourCard = ({ tour, isAdmin }) => {
 
     getAddress()
   }, [tour.boardingPointLocation])
+
+  function handleViewDetails () {
+    navigateToTourInfo(navigate, tour.tourId)
+  }
 
   return (
     <StyledCard>
@@ -172,10 +180,7 @@ const TourCard = ({ tour, isAdmin }) => {
       </StyledCardContent>
       <CardActions>
         <div style={{ textAlign: 'center' }}>
-          <Button
-            variant='contained'
-            onClick={() => navigateToTourInfo(navigate, tour.tourId)}
-          >
+          <Button variant='contained' onClick={handleViewDetails}>
             View Details
           </Button>
           {isAdmin && (

@@ -16,6 +16,7 @@ import {
 import { ChevronLeft, ChevronRight } from '@mui/icons-material'
 import TourCard from '../components/TourCard'
 import { getAllTours } from '../api/admin'
+import { formatDate } from '../util/helperFunctions'
 
 const RecentTours = ({ isAdmin }) => {
   const [searchValue, setSearchValue] = useState(null)
@@ -44,14 +45,14 @@ const RecentTours = ({ isAdmin }) => {
     setSearchValue(value)
   }
 
-  const [selectedDate, setSelectedDate] = useState(null)
+  const [selectedDate, setSelectedDate] = useState(formatDate(Date.now()))
 
   const handlePrevDay = () => {
     if (selectedDate) {
       const currentDate = new Date(selectedDate)
       const prevDay = new Date(currentDate.getTime() - 24 * 60 * 60 * 1000)
       const formattedPrevDay = prevDay.toISOString().split('T')[0]
-      setSelectedDate(formattedPrevDay)
+      setSelectedDate(formatDate(formattedPrevDay))
     }
   }
 
@@ -60,7 +61,7 @@ const RecentTours = ({ isAdmin }) => {
       const currentDate = new Date(selectedDate)
       const nextDay = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000)
       const formattedNextDay = nextDay.toISOString().split('T')[0]
-      setSelectedDate(formattedNextDay)
+      setSelectedDate(formatDate(formattedNextDay))
     }
   }
 
@@ -70,7 +71,7 @@ const RecentTours = ({ isAdmin }) => {
 
   const handleDateChange = e => {
     const selectedDate = e.target.value
-    setSelectedDate(selectedDate)
+    setSelectedDate(formatDate(selectedDate))
   }
   const handleSort = tours => {
     if (sortValue === 'asc') {
