@@ -1,5 +1,10 @@
 var express = require('express')
-var app = express()
+const bodyParser = require('body-parser')
+
+const app = express()
+
+// Parse JSON bodies
+app.use(bodyParser.json())
 
 var tourRoutes = require('./routes/tourRoutes')
 

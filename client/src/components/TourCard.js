@@ -41,6 +41,7 @@ const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
 }))
 
 const TourCard = ({ tour }) => {
+  console.log('tour:', tour)
   const [dialogOpen, setDialogOpen] = useState(false)
 
   const navigate = useNavigate()
@@ -49,11 +50,10 @@ const TourCard = ({ tour }) => {
     summary,
     date,
     location,
-    image,
+    // image,
     amount,
-    boardingPointLocation,
     place,
-    guideInfo,
+    guideName,
     returnTime,
     departureTime,
     capacity,
@@ -68,6 +68,7 @@ const TourCard = ({ tour }) => {
 
   const remainingAvailability = capacity - bookingPerson
   const [address, setAddress] = useState('')
+  const image = 'https://picsum.photos/seed/picsum/800/600'
   useEffect(() => {
     const getAddress = async () => {
       try {
@@ -145,7 +146,7 @@ const TourCard = ({ tour }) => {
               Remaining Availability: {remainingAvailability}
             </Typography>
             <Box display='flex' alignItems='center' marginTop={1}>
-              <Typography variant='body2'>Guide: {guideInfo.name}</Typography>
+              <Typography variant='body2'>Guide: {guideName}</Typography>
             </Box>
             <Box display='flex' alignItems='center' marginTop={1}>
               <Typography variant='body2'>Return Time: {returnTime}</Typography>

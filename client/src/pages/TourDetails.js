@@ -6,6 +6,7 @@ import { Grid } from '@mui/material'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css' // Import the styles
 import BoardingLocation from '../components/BoardingLocation'
+import { getTourById } from '../api/admin'
 
 const TourDetails = () => {
   const { id } = useParams()
@@ -15,41 +16,9 @@ const TourDetails = () => {
     // Mock API call to fetch tour details
     const fetchTourDetails = async () => {
       try {
-        // Simulating API response delay
-        await new Promise(resolve => setTimeout(resolve, 1000))
-
-        // Mock tour details data based on the ID from the URL param
-        const tourId = parseInt(id)
-        const mockTour = {
-          id: tourId,
-          name: `Tour ${tourId}`,
-          capacity: 100,
-          bookingPerson: 10,
-          remainingAvailability: 90,
-          boardingPointLocation: {
-            lat: 23.723404, // Sample latitude coordinate
-            lng: 90.41305
-            // Sample longitude coordinate
-          },
-          duration: '5 days',
-          itinerary: 'Day 1: Lorem ipsum dolor sit amet...',
-          pricing: '$500 per person',
-          additionalInfo:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-          guideInfo: {
-            name: 'John Doe',
-            contact: 'john.doe@example.com'
-          },
-          returnTime: '6:00 PM',
-          departureTime: '9:00 AM',
-          imageUrls: [
-            'https://picsum.photos/seed/picsum/800/600',
-            'https://picsum.photos/seed/picsum/800/600',
-            'https://picsum.photos/seed/picsum/800/600'
-          ]
-        }
-
-        setTour(mockTour)
+        getTourById(id).then(data => {
+          setTour(data[0])
+        })
       } catch (error) {
         console.error('Error fetching tour details:', error)
       }
@@ -57,7 +26,13 @@ const TourDetails = () => {
 
     fetchTourDetails()
   }, [id])
+  const imageUrls = [
+    'https://picsum.photos/seed/picsum/800/600',
+    'https://picsum.photos/seed/picsum/800/600',
+    'https://picsum.photos/seed/picsum/800/600'
+  ]
 
+  if (tour === null) return <p>Loading..</p>
   return (
     <div>
       {tour ? (
@@ -65,7 +40,7 @@ const TourDetails = () => {
           <Grid item xs={12} md={6}>
             <h2>{tour.name}</h2>
             <ImageGallery
-              items={tour.imageUrls.map(url => ({
+              items={imageUrls.map(url => ({
                 original: url,
                 thumbnail: url,
                 thumbnailHeight: '40px'
@@ -93,10 +68,9 @@ const TourDetails = () => {
                     Additional Info:
                   </h3>
 
-                  {tour.additionalInfo}
+                  {/* {tour.additionalInfo} */}
                 </Grid>
               </p>
-              <p style={{ fontStyle: 'italic' }}>{tour.additionalInfo}</p>
               <p
                 style={{
                   fontWeight: 'bold',
@@ -104,12 +78,12 @@ const TourDetails = () => {
                   padding: '5px'
                 }}
               >
-                Guide: {tour.guideInfo.name} ({tour.guideInfo.contact})
+                Guide: {tour.guideName} ({tour.guideContact})
               </p>
               <p variant='body1'>Capacity: {tour.capacity}</p>
               <p variant='body1'>Booking Persons: {tour.bookingPerson}</p>
               <p variant='body1'>
-                Remaining Availability: {tour.remainingAvailability}
+                Remaining Availability: {tour.capacity - tour.bookingPerson}
               </p>
               <p style={{ fontWeight: 'bold' }}>
                 Return Time: {tour.returnTime}
@@ -120,7 +94,10 @@ const TourDetails = () => {
               <p style={{ fontWeight: 'bold' }}>
                 boarding point:
                 <BoardingLocation
-                  boardingPointLocation={tour.boardingPointLocation}
+                  boardingPointLocation={{
+                    lat: tour.boardingPointLat,
+                    lng: tour.boardingPointLng
+                  }}
                 />
               </p>
             </Grid>

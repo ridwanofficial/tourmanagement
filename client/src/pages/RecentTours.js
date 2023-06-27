@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/system'
 import {
   Container,
@@ -15,12 +15,25 @@ import {
 } from '@mui/material'
 import { ChevronLeft, ChevronRight } from '@mui/icons-material'
 import TourCard from '../components/TourCard'
-import { mockTours } from '../constant'
 import ChooseBoardingPoint from '../components/ChooseBoardingPoint'
+import { getAllTours } from '../api/admin'
 
 const RecentTours = () => {
   const [searchValue, setSearchValue] = useState(null)
   const [sortValue, setSortValue] = useState('')
+  const [tourData, setTourData] = useState([])
+
+  useEffect(() => {
+    getAllTours()
+      .then(data => {
+        setTourData(data)
+      })
+      .catch(err => {
+        console.log('err:', err)
+      })
+
+    return () => {}
+  }, [])
 
   const searchOptions = [
     { label: 'Option 1', value: 'option1' },
@@ -52,9 +65,9 @@ const RecentTours = () => {
     }
   }
 
-  const filteredTours = selectedDate
-    ? mockTours.filter(tour => tour.date === selectedDate)
-    : mockTours
+  // const filteredTours = selectedDate
+  //   ? tourData.filter(tour => tour.date === selectedDate)
+  //   : tourData
 
   const handleDateChange = e => {
     const selectedDate = e.target.value
@@ -116,13 +129,14 @@ const RecentTours = () => {
             </div>
           </div>
           <Grid container spacing={2}>
-            {filteredTours.map(tour => (
-              <Grid item key={tour.id} xs={12} sm={6} md={4}>
-                <Box>
-                  <TourCard tour={tour} />
-                </Box>
-              </Grid>
-            ))}
+            {tourData.length > 0 &&
+              tourData.map(tour => (
+                <Grid item key={tour.id} xs={12} sm={6} md={4}>
+                  <Box>
+                    <TourCard tour={tour} />
+                  </Box>
+                </Grid>
+              ))}
           </Grid>
         </Box>
       </Container>

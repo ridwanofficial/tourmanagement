@@ -10,6 +10,7 @@ const customIcon = leafletIcon({
 })
 
 const BoardingLocation = ({ boardingPointLocation }) => {
+  console.log('boardingPointLocation:', boardingPointLocation)
   const handleDirectionsClick = () => {
     const currentLocation = navigator.geolocation
 

@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ReactQuill from 'react-quill'
+import { getTourDetailsById } from '../../api/admin'
 const EditTourForm = () => {
-  const { tourId } = useParams()
+  // const { id } = useParams()
+  const id = 1
+
   const navigate = useNavigate()
-  const [tourData, setTourData] = useState({
-    name: '',
-    summary: '<p></p>',
-    images: ['https://picsum.photos/seed/picsum/800/600']
-    // Add more fields as needed
-  })
+  const [tourData, setTourData] = useState(null)
+  const images = ['https://picsum.photos/seed/picsum/800/600']
+  //
 
   // Handle form submission
   const handleSubmit = e => {
@@ -17,9 +17,14 @@ const EditTourForm = () => {
     // Perform API request to update tour data
     console.log('Submitting tour data:', tourData)
     // Redirect back to tour details page or desired location
-    navigate(`/admin/tours/${tourId}`)
+    navigate(`/admin/tours/${id}`)
   }
 
+  useEffect(() => {
+    getTourDetailsById(id).then(data => {
+      setTourData(data[0])
+    })
+  }, [])
   // Handle form field changes
   const handleChange = e => {
     const { name, value } = e.target
@@ -37,6 +42,7 @@ const EditTourForm = () => {
   const handleChangeSummary = value => {
     setTourData(prevData => ({ ...prevData, summary: value }))
   }
+  if (tourData === null) return <p>Loading.....</p>
 
   return (
     <div>
@@ -62,7 +68,7 @@ const EditTourForm = () => {
           />
         </div>
         <h4>Uploaded Images:</h4>
-        {tourData.images.map((image, index) => (
+        {images.map((image, index) => (
           <div key={index}>
             <img
               src={image}
