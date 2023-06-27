@@ -17,6 +17,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 
 import { useNavigate } from 'react-router-dom'
 import { OpenStreetMapProvider } from 'leaflet-geosearch'
+import { Dialog, DialogTitle, DialogContent } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 const provider = new OpenStreetMapProvider()
 
@@ -39,6 +41,8 @@ const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
 }))
 
 const TourCard = ({ tour }) => {
+  const [dialogOpen, setDialogOpen] = useState(false)
+
   const navigate = useNavigate()
   const {
     name,
@@ -55,6 +59,13 @@ const TourCard = ({ tour }) => {
     capacity,
     bookingPerson
   } = tour
+  const openDialog = () => {
+    setDialogOpen(true)
+  }
+  const closeDialog = () => {
+    setDialogOpen(false)
+  }
+
   const remainingAvailability = capacity - bookingPerson
   const [address, setAddress] = useState('')
   useEffect(() => {
@@ -95,7 +106,6 @@ const TourCard = ({ tour }) => {
             <FavoriteIcon />
           </IconButton>
         </Box>
-        <Typography variant='body1'>{summary}</Typography>
         <Box display='flex' alignItems='center' marginTop={1}>
           <IconButton>
             <CalendarTodayIcon />
@@ -106,6 +116,7 @@ const TourCard = ({ tour }) => {
           </IconButton>
           <Typography variant='body2'>{location}</Typography>
         </Box>
+
         <Box display='flex' alignItems='center' marginTop={2}>
           <Typography variant='body2' color='primary'>
             {amount}
@@ -118,32 +129,57 @@ const TourCard = ({ tour }) => {
         <Typography variant='body1'>
           Booking Persons: {bookingPerson}
         </Typography>
-        <Typography variant='body1'>
-          Remaining Availability: {remainingAvailability}
-        </Typography>
-        <Box display='flex' alignItems='center' marginTop={1}>
-          <Typography variant='body2'>Guide: {guideInfo.name}</Typography>
-        </Box>
-        <Box display='flex' alignItems='center' marginTop={1}>
-          <Typography variant='body2'>Return Time: {returnTime}</Typography>
-        </Box>
-        <Box display='flex' alignItems='center' marginTop={1}>
-          <Typography variant='body2'>
-            Departure Time: {departureTime}
-          </Typography>
-        </Box>
-        <p>
-          <span style={{ fontWeight: '700' }}>Boarding Point:</span>
-          {address}
-        </p>
+
+        <IconButton onClick={openDialog}>
+          <span
+            style={{ color: '#1b73a6', fontWeight: '700', fontSize: '16px' }}
+          >
+            See More...
+          </span>
+          {/* <ExpandMoreIcon /> */}
+        </IconButton>
+        <Dialog open={dialogOpen} onClose={closeDialog}>
+          <DialogTitle>Additional Details</DialogTitle>
+          <DialogContent>
+            <Typography variant='body1'>
+              Remaining Availability: {remainingAvailability}
+            </Typography>
+            <Box display='flex' alignItems='center' marginTop={1}>
+              <Typography variant='body2'>Guide: {guideInfo.name}</Typography>
+            </Box>
+            <Box display='flex' alignItems='center' marginTop={1}>
+              <Typography variant='body2'>Return Time: {returnTime}</Typography>
+            </Box>
+            <Box display='flex' alignItems='center' marginTop={1}>
+              <Typography variant='body2'>
+                Departure Time: {departureTime}
+              </Typography>
+            </Box>
+            <p>
+              <span style={{ fontWeight: '700' }}>Boarding Point:</span>
+              {address}
+            </p>
+            <Typography variant='body1'>{summary}</Typography>
+            <div style={{ textAlign: 'center' }}>
+              <Button
+                variant='contained'
+                onClick={() => navigateToTourDetails(tour.id)}
+              >
+                View Details
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </StyledCardContent>
       <CardActions>
-        <Button
-          variant='contained'
-          onClick={() => navigateToTourDetails(tour.id)}
-        >
-          View Details
-        </Button>
+        <div style={{ textAlign: 'center' }}>
+          <Button
+            variant='contained'
+            onClick={() => navigateToTourDetails(tour.id)}
+          >
+            View Details
+          </Button>
+        </div>
       </CardActions>
     </StyledCard>
   )

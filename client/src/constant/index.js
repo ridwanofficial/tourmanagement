@@ -6,7 +6,7 @@ export const mockTours = [
       'ঢাকা শহরের পরিমাণগুলো সীমাবদ্ধ না থাকে। এখানে এমন কোনো বৌদ্ধিক নগরী নেই যেখানে প্রতিবেশীরা নিজস্ব মতে জীবনযাত্রা চলাচল না করে অন্যের মতে চলে।',
     date: '2023-07-01',
     location: 'ঢাকা',
-    image: 'https://via.placeholder.com/400x225',
+    image: 'https://picsum.photos/seed/picsum/800/600',
     amount: '১০০০',
     place: 'ঢাকা',
     capacity: 100,
@@ -38,7 +38,7 @@ export const mockTours = [
       lat: 37.7749, // Sample latitude coordinate
       lng: -122.4194 // Sample longitude coordinate
     },
-    image: 'https://via.placeholder.com/400x225',
+    image: 'https://picsum.photos/seed/picsum/800/600',
     amount: '১৫০০',
     place: 'সুন্দরবন',
     isFeatured: false,
