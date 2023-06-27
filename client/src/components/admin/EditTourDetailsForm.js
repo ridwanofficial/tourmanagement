@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ReactQuill from 'react-quill'
-import { getTourDetailsById } from '../../api/admin'
-const EditTourForm = () => {
-  // const { id } = useParams()
-  const id = 1
+import { getTourDetailsById, updateTourDetails } from '../../api/admin'
+import {
+  navigateToTourDetailsEdit,
+  navigateToTourEdit
+} from '../../util/navigations'
+import { Button } from '@mui/material'
+const EditTourDetailsForm = ({ editMode }) => {
+  const { id } = useParams()
 
   const navigate = useNavigate()
   const [tourData, setTourData] = useState(null)
@@ -16,8 +20,9 @@ const EditTourForm = () => {
     e.preventDefault()
     // Perform API request to update tour data
     console.log('Submitting tour data:', tourData)
+    updateTourDetails(id, tourData).then(data => {})
     // Redirect back to tour details page or desired location
-    navigate(`/admin/tours/${id}`)
+    // navigate(`/admin/tours/${id}`)
   }
 
   useEffect(() => {
@@ -55,6 +60,7 @@ const EditTourForm = () => {
             id='tourName'
             name='name'
             value={tourData.name}
+            disabled={!editMode}
             onChange={handleChange}
           />
         </div>
@@ -64,6 +70,7 @@ const EditTourForm = () => {
           <ReactQuill
             id='tourSummary'
             value={tourData.summary}
+            disabled={!editMode}
             onChange={handleChangeSummary}
           />
         </div>
@@ -77,20 +84,32 @@ const EditTourForm = () => {
             />
           </div>
         ))}
-        <div>
-          <label htmlFor='tourImage'>Upload Image:</label>
-          <input
-            type='file'
-            id='tourImage'
-            name='image'
-            onChange={handleImageUpload}
-          />
-        </div>
-        {/* Add more form fields as needed */}
-        <button type='submit'>Save Changes</button>
+        {editMode ? (
+          <>
+            <div>
+              <label htmlFor='tourImage'>Upload Image:</label>
+              <input
+                type='file'
+                id='tourImage'
+                name='image'
+                onChange={handleImageUpload}
+              />
+            </div>
+
+            <button type='submit'>Save Changes</button>
+          </>
+        ) : (
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              onClick={() => navigateToTourDetailsEdit(navigate, tourData.id)}
+            >
+              Edit
+            </Button>
+          </div>
+        )}
       </form>
     </div>
   )
 }
 
-export default EditTourForm
+export default EditTourDetailsForm

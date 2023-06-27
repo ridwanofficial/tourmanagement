@@ -29,15 +29,9 @@ export const getTourDetailsById = id =>
 `
   )
 export const updateTourDetails = (id, body) =>
-  getClient(
-    `${RootAddress}/updateTourDetails/${id},
-  
-
-`,
-    {
-      postMethod: true,
-      body: body
-    }
-  )
+  getClient(`${RootAddress}/updateTourDetails/${id}`, {
+    postMethod: true,
+    body: body
+  })
 
 //

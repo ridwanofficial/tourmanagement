@@ -15,10 +15,9 @@ import {
 } from '@mui/material'
 import { ChevronLeft, ChevronRight } from '@mui/icons-material'
 import TourCard from '../components/TourCard'
-import ChooseBoardingPoint from '../components/ChooseBoardingPoint'
 import { getAllTours } from '../api/admin'
 
-const RecentTours = () => {
+const RecentTours = ({ isAdmin }) => {
   const [searchValue, setSearchValue] = useState(null)
   const [sortValue, setSortValue] = useState('')
   const [tourData, setTourData] = useState([])
@@ -133,7 +132,7 @@ const RecentTours = () => {
               tourData.map(tour => (
                 <Grid item key={tour.id} xs={12} sm={6} md={4}>
                   <Box>
-                    <TourCard tour={tour} />
+                    <TourCard tour={tour} isAdmin={isAdmin} />
                   </Box>
                 </Grid>
               ))}

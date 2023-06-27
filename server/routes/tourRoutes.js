@@ -57,7 +57,7 @@ router.get('/getAllTour', (req, res) => {
 })
 
 // update a tours
-router.put('/updateTour/:id', (req, res) => {
+router.post('/updateTour/:id', (req, res) => {
   const tourId = req.params.id
   const {
     date,
@@ -90,7 +90,7 @@ router.put('/updateTour/:id', (req, res) => {
         )
     })
     .then(() => {
-      res.sendStatus(200)
+      res.status(200).json({ message: 'Success' })
     })
     .catch(err => {
       console.error('Failed to update tour details:', err)
@@ -162,7 +162,7 @@ router.post('/createTourDetails', (req, res) => {
     })
 })
 
-router.put('/updateTourDetails/:id', (req, res) => {
+router.post('/updateTourDetails/:id', (req, res) => {
   const tourId = req.params.id
   const { name, summary, location, place } = req.body
 
@@ -180,7 +180,7 @@ router.put('/updateTourDetails/:id', (req, res) => {
         )
     })
     .then(() => {
-      res.sendStatus(200)
+      res.status(200).json({ message: 'success' })
     })
     .catch(err => {
       console.error('Failed to update tour details:', err)

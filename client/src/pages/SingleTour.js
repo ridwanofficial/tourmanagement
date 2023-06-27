@@ -8,7 +8,7 @@ import 'react-quill/dist/quill.snow.css' // Import the styles
 import BoardingLocation from '../components/BoardingLocation'
 import { getTourById } from '../api/admin'
 
-const TourDetails = () => {
+const SingleTour = () => {
   const { id } = useParams()
   const [tour, setTour] = useState(null)
 
@@ -67,8 +67,7 @@ const TourDetails = () => {
                   >
                     Additional Info:
                   </h3>
-
-                  {/* {tour.additionalInfo} */}
+                  <ReactQuill id='tourSummary' value={tour.summary} />
                 </Grid>
               </p>
               <p
@@ -125,4 +124,4 @@ const TourDetails = () => {
   )
 }
 
-export default TourDetails
+export default SingleTour

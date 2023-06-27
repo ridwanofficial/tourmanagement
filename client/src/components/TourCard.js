@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { OpenStreetMapProvider } from 'leaflet-geosearch'
 import { Dialog, DialogTitle, DialogContent } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { navigateToTourEdit, navigateToTourInfo } from '../util/navigations'
 
 const provider = new OpenStreetMapProvider()
 
@@ -40,7 +41,7 @@ const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
   paddingTop: '56.25%' // 16:9 aspect ratio
 }))
 
-const TourCard = ({ tour }) => {
+const TourCard = ({ tour, isAdmin }) => {
   console.log('tour:', tour)
   const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -68,12 +69,13 @@ const TourCard = ({ tour }) => {
 
   const remainingAvailability = capacity - bookingPerson
   const [address, setAddress] = useState('')
+  console.log('address:', address)
   const image = 'https://picsum.photos/seed/picsum/800/600'
   useEffect(() => {
     const getAddress = async () => {
       try {
         const response = await axios.get(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${tour.boardingPointLocation.lat}&lon=${tour.boardingPointLocation.lng}`
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${tour.boardingPointLat}&lon=${tour.boardingPointLng}`
         )
         if (response.data && response.data.display_name) {
           setAddress(response.data.display_name)
@@ -85,10 +87,6 @@ const TourCard = ({ tour }) => {
 
     getAddress()
   }, [tour.boardingPointLocation])
-
-  const navigateToTourDetails = tourId => {
-    navigate(`/tour-details/${tourId}`)
-  }
 
   return (
     <StyledCard>
@@ -160,11 +158,11 @@ const TourCard = ({ tour }) => {
               <span style={{ fontWeight: '700' }}>Boarding Point:</span>
               {address}
             </p>
-            <Typography variant='body1'>{summary}</Typography>
+
             <div style={{ textAlign: 'center' }}>
               <Button
                 variant='contained'
-                onClick={() => navigateToTourDetails(tour.id)}
+                onClick={() => navigateToTourInfo(navigate, tour.id)}
               >
                 View Details
               </Button>
@@ -176,10 +174,15 @@ const TourCard = ({ tour }) => {
         <div style={{ textAlign: 'center' }}>
           <Button
             variant='contained'
-            onClick={() => navigateToTourDetails(tour.id)}
+            onClick={() => navigateToTourInfo(navigate, tour.tourId)}
           >
             View Details
           </Button>
+          {isAdmin && (
+            <Button onClick={() => navigateToTourEdit(navigate, tour.tourId)}>
+              Edit
+            </Button>
+          )}
         </div>
       </CardActions>
     </StyledCard>
