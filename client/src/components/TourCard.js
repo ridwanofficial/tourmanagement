@@ -184,7 +184,11 @@ const TourCard = ({ tour, isAdmin }) => {
             View Details
           </Button>
           {isAdmin && (
-            <Button onClick={() => navigateToTourEdit(navigate, tour.tourId)}>
+            <Button
+              onClick={() => {
+                navigateToTourEdit(navigate, tour.tourId)
+              }}
+            >
               Edit
             </Button>
           )}

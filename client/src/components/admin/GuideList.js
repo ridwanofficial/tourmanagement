@@ -5,6 +5,7 @@ import TourDetailsCard from '../TourDetailsCard'
 import { getAllGuides, getAllTourDetails } from '../../api/admin'
 import { navigateToCreateTourDetails } from '../../util/navigations'
 import { useNavigate } from 'react-router-dom'
+import GuideCard from '../GuideCard'
 
 const GuideList = ({ tours, onDelete }) => {
   const navigate = useNavigate()
@@ -28,10 +29,10 @@ const GuideList = ({ tours, onDelete }) => {
       <Container maxWidth='lg'>
         <Grid container spacing={2}>
           {guideData.length > 0 &&
-            guideData.map(tour => (
-              <Grid item key={tour.id} xs={12} sm={6} md={4}>
+            guideData.map(guide => (
+              <Grid item key={guide.guideId} xs={12} sm={6} md={4}>
                 <Box>
-                  <TourDetailsCard tour={tour} />
+                  <GuideCard guide={guide} />
                 </Box>
               </Grid>
             ))}

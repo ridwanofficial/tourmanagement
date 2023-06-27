@@ -74,7 +74,11 @@ const GuideCard = ({ guide }) => {
         </Button>
       </StyledCardContent>
       <div style={{ textAlign: 'center' }}>
-        <Button onClick={() => navigateToGuidesEdit(navigate, guide.id)}>
+        <Button
+          onClick={() => {
+            navigateToGuidesEdit(navigate, guide.id)
+          }}
+        >
           Edit
         </Button>
       </div>
