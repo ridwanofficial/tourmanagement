@@ -1,24 +1,56 @@
-const express = require('express')
-const app = express()
-const mysql = require('mysql')
+var express = require('express')
+var app = express()
+const sql = require('mssql')
 
-const connection = mysql.createConnection({
-  host: '127.0.0.1',
+const config = {
+  server: 'localhost',
+  port: 1433,
   user: 'admin1',
   password: '1234',
-  database: 'TourManagement'
-})
-
-connection.connect(err => {
-  if (err) {
-    console.error('Failed to connect to the database:', err)
-  } else {
-    console.log('Connected to the database!')
-    // Perform database operations here
+  database: 'TourManagement',
+  options: {
+    encrypt: true,
+    trustServerCertificate: true,
+    ssl: {
+      // ca: fs.readFileSync('/path/to/self_signed_certificate.pem')
+    }
   }
+}
+
+// Get tour details by ID
+app.get('/tour-details/:id', (req, res) => {
+  const tourId = req.params.id
+
+  sql
+    .connect(config)
+    .then(pool => {
+      return pool
+        .request()
+        .input('tourId', sql.Int, tourId)
+        .query('SELECT * FROM tour_details WHERE id = @tourId')
+    })
+    .then(result => {
+      console.log('result:', result)
+      const tourDetails = result.recordset[0]
+      res.json(tourDetails)
+    })
+    .catch(err => {
+      console.error('Failed to get tour details:', err)
+      res.status(500).json({ error: 'Failed to get tour details' })
+    })
 })
 
-// connection.connect()
+sql
+  .connect(config)
+  .then(pool => {
+    // console.log('pool:', pool)
+    // Connection successful, perform database operations
+  })
+  .catch(err => {
+    console.error('Failed to connect to SQL Server:', err)
+  })
 
-// const port = 5000
-// app.listen(port, () => console.log(`Server started on port ${port}`))
+// Start the server
+app.listen(5000, () => {
+  console.log('Server is running on port 3000')
+})
