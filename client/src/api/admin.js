@@ -38,6 +38,12 @@ export const createTourDetails = body =>
     postMethod: true,
     body: body
   })
+export const createGuide = body =>
+  getClient(`${RootAddress}/createGuide`, {
+    postMethod: true,
+    body: body
+  })
+
 export const updateTour = (id, body) =>
   getClient(`${RootAddress}/updateTour/${id}`, {
     postMethod: true,

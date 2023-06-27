@@ -93,6 +93,46 @@ router.get('/getGuideById/:id', (req, res) => {
       res.status(500).json({ error: 'Failed to get tour details' })
     })
 })
+router.post('/createGuide', (req, res) => {
+  const { name, email, contactNumber, id } = req.body
+
+  sqlConnection()
+    .then(pool => {
+      return pool
+        .request()
+        .input('id', sql.Int, id)
+        .input('name', sql.VarChar, name)
+        .input('email', sql.VarChar, email)
+        .input('contactNumber', sql.VarChar, contactNumber).query(`
+          BEGIN TRANSACTION;
+          DECLARE @personId INT;
+          
+          INSERT INTO persons (id,name, email, contactNumber)
+          VALUES (@id,@name, @email, @contactNumber);
+          
+          SET @personId = SCOPE_IDENTITY();
+          
+          INSERT INTO guides (id,personId)
+          VALUES (@id,@personId);
+          
+          COMMIT;
+          
+          SELECT g.id, p.name, p.email, p.contactNumber
+          FROM guides AS g
+          INNER JOIN persons AS p ON g.personId = p.id
+          WHERE g.id = SCOPE_IDENTITY();
+        `)
+    })
+    .then(result => {
+      const guide = result.recordset[0]
+      res.json(guide)
+    })
+    .catch(err => {
+      console.error('Failed to create guide:', err)
+      res.status(500).json({ error: 'Failed to create guide' })
+    })
+})
+
 router.post('/updateGuide/:id', (req, res) => {
   const guideId = req.params.id
   const { name, email, contactNumber } = req.body
@@ -104,8 +144,7 @@ router.post('/updateGuide/:id', (req, res) => {
         .input('guideId', sql.Int, guideId)
         .input('name', sql.VarChar, name)
         .input('email', sql.VarChar, email)
-        .input('contactNumber', sql.VarChar, contactNumber)
-        .query(`
+        .input('contactNumber', sql.VarChar, contactNumber).query(`
           UPDATE persons
         SET name = @name, email = @email, contactNumber = @contactNumber
         FROM guides AS g
