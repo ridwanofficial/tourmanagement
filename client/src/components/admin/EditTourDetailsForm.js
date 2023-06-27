@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ReactQuill from 'react-quill'
-import { getTourDetailsById, updateTourDetails } from '../../api/admin'
+import {
+  createTourDetails,
+  getTourDetailsById,
+  updateTourDetails
+} from '../../api/admin'
 import {
   navigateToTourDetailsEdit,
   navigateToTourEdit
 } from '../../util/navigations'
 import { Button } from '@mui/material'
-const EditTourDetailsForm = ({ editMode }) => {
+import { TOUR_DETAILS_CONST } from '../../constant'
+const defaultData = {
+  name: '',
+  summary: '<p></p>'
+}
+const EditTourDetailsForm = ({ mode }) => {
   const { id } = useParams()
 
   const navigate = useNavigate()
   const [tourData, setTourData] = useState(null)
+  console.log('tourData:', tourData)
   const images = ['https://picsum.photos/seed/picsum/800/600']
   //
 
@@ -24,12 +34,21 @@ const EditTourDetailsForm = ({ editMode }) => {
     // Redirect back to tour details page or desired location
     // navigate(`/admin/tours/${id}`)
   }
+  function handleCreateNewTourDetails () {
+    createTourDetails({ ...tourData, id: Math.floor(Math.random(10000)) })
+      .then()
+      .catch(err => {})
+  }
 
   useEffect(() => {
-    getTourDetailsById(id).then(data => {
-      setTourData(data[0])
-    })
-  }, [])
+    if (mode === TOUR_DETAILS_CONST.NEW) {
+      setTourData(defaultData)
+    } else {
+      getTourDetailsById(id).then(data => {
+        setTourData(data[0])
+      })
+    }
+  }, [mode])
   // Handle form field changes
   const handleChange = e => {
     const { name, value } = e.target
@@ -60,18 +79,40 @@ const EditTourDetailsForm = ({ editMode }) => {
             id='tourName'
             name='name'
             value={tourData.name}
-            disabled={!editMode}
+            disabled={mode === TOUR_DETAILS_CONST.VIEW}
             onChange={handleChange}
           />
         </div>
-
         <div>
           <label htmlFor='tourSummary'>Summary:</label>
           <ReactQuill
             id='tourSummary'
             value={tourData.summary}
-            disabled={!editMode}
+            disabled={mode === TOUR_DETAILS_CONST.VIEW}
             onChange={handleChangeSummary}
+          />
+        </div>
+        ;
+        <div>
+          <label htmlFor='location'>Tour Location:</label>
+          <input
+            type='text'
+            id='location'
+            name='location'
+            value={tourData.location}
+            disabled={mode === TOUR_DETAILS_CONST.VIEW}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor='tourplace'>Tour place:</label>
+          <input
+            type='text'
+            id='tourplace'
+            name='place'
+            value={tourData.place}
+            disabled={mode === TOUR_DETAILS_CONST.VIEW}
+            onChange={handleChange}
           />
         </div>
         <h4>Uploaded Images:</h4>
@@ -84,7 +125,7 @@ const EditTourDetailsForm = ({ editMode }) => {
             />
           </div>
         ))}
-        {editMode ? (
+        {mode === TOUR_DETAILS_CONST.EDIT && (
           <>
             <div>
               <label htmlFor='tourImage'>Upload Image:</label>
@@ -98,13 +139,19 @@ const EditTourDetailsForm = ({ editMode }) => {
 
             <button type='submit'>Save Changes</button>
           </>
-        ) : (
+        )}
+        {mode === TOUR_DETAILS_CONST.VIEW && (
           <div style={{ textAlign: 'center' }}>
             <Button
               onClick={() => navigateToTourDetailsEdit(navigate, tourData.id)}
             >
               Edit
             </Button>
+          </div>
+        )}
+        {mode === TOUR_DETAILS_CONST.NEW && (
+          <div style={{ textAlign: 'center' }}>
+            <Button onClick={handleCreateNewTourDetails}>Save</Button>
           </div>
         )}
       </form>

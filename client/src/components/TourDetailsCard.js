@@ -79,21 +79,6 @@ const TourDetailsCard = ({ tour }) => {
             <FavoriteIcon />
           </IconButton>
         </Box>
-        <Box display='flex' alignItems='center' marginTop={1}>
-          <IconButton>
-            <CalendarTodayIcon />
-          </IconButton>
-          <IconButton>
-            <LocationOnIcon />
-          </IconButton>
-          <Typography variant='body2'>{location}</Typography>
-        </Box>
-
-        <Box display='flex' alignItems='center' marginTop={2}>
-          <Typography variant='body2' color='textSecondary' marginLeft={1}>
-            {place}
-          </Typography>
-        </Box>
 
         <Button
           variant='contained'

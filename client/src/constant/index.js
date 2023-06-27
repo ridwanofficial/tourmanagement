@@ -52,3 +52,9 @@ export const mockTours = [
   }
   // Add more tour objects as needed
 ]
+
+export const TOUR_DETAILS_CONST = {
+  NEW: 0,
+  VIEW: 1,
+  EDIT: 2
+}

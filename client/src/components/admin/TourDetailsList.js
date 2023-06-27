@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Box, Grid } from '@mui/material'
+import { Container, Box, Grid, Button } from '@mui/material'
 
 import TourDetailsCard from '../TourDetailsCard'
 import { getAllTourDetails } from '../../api/admin'
+import { navigateToCreateTourDetails } from '../../util/navigations'
+import { useNavigate } from 'react-router-dom'
 
 const TourDetailsList = ({ tours, onDelete }) => {
+  const navigate = useNavigate()
+
   const [tourDetailsData, setTourDetailsData] = useState([])
 
   useEffect(() => {
@@ -32,6 +36,9 @@ const TourDetailsList = ({ tours, onDelete }) => {
               </Grid>
             ))}
         </Grid>
+        <Button onClick={() => navigateToCreateTourDetails(navigate)}>
+          Create a new tour details
+        </Button>
       </Container>
     </div>
   )

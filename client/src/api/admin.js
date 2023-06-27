@@ -33,5 +33,13 @@ export const updateTourDetails = (id, body) =>
     postMethod: true,
     body: body
   })
-
-//
+export const createTourDetails = body =>
+  getClient(`${RootAddress}/createTourDetails`, {
+    postMethod: true,
+    body: body
+  })
+export const updateTour = (id, body) =>
+  getClient(`${RootAddress}/updateTour/${id}`, {
+    postMethod: true,
+    body: body
+  })

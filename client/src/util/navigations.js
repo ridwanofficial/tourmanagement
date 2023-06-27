@@ -11,10 +11,16 @@ const navigateToTourInfo = (navigate, tourId) => {
 const navigateToTourEdit = (navigate, tourId) => {
   navigate(`/tour/${tourId}/edit`)
 }
+const navigateToCreateTourDetails = navigate => {
+  navigate(`/create-tour-details`)
+}
+
+// create - tour - details
 
 export {
   navigateToTourDetails,
   navigateToTourDetailsEdit,
   navigateToTourInfo,
-  navigateToTourEdit
+  navigateToTourEdit,
+  navigateToCreateTourDetails
 }
