@@ -170,7 +170,7 @@ const TourCard = ({ tour, isAdmin }) => {
             <div style={{ textAlign: 'center' }}>
               <Button
                 variant='contained'
-                onClick={() => navigateToTourInfo(navigate, tour.id)}
+                onClick={() => navigateToTourInfo(navigate, tour.tourId)}
               >
                 View Details
               </Button>

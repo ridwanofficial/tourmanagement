@@ -61,27 +61,24 @@ const GuideCard = ({ guide }) => {
           <Typography variant='h6' gutterBottom>
             {name}
           </Typography>
-          <IconButton>
-            <FavoriteIcon />
-          </IconButton>
         </Box>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button
+            variant='contained'
+            //   onClick={() => navigateToTourDetails(navigate, guide.id)}
+          >
+            View Details
+          </Button>
 
-        <Button
-          variant='contained'
-          //   onClick={() => navigateToTourDetails(navigate, guide.id)}
-        >
-          View Details
-        </Button>
+          <Button
+            onClick={() => {
+              navigateToGuidesEdit(navigate, guide.id)
+            }}
+          >
+            Edit
+          </Button>
+        </div>
       </StyledCardContent>
-      <div style={{ textAlign: 'center' }}>
-        <Button
-          onClick={() => {
-            navigateToGuidesEdit(navigate, guide.id)
-          }}
-        >
-          Edit
-        </Button>
-      </div>
     </StyledCard>
   )
 }

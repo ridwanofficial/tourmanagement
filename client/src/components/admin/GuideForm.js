@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import ReactQuill from 'react-quill'
 import {
   getAllGuides,
   getGuideById,
@@ -11,8 +10,10 @@ import {
   navigateToTourDetailsEdit,
   navigateToTourEdit
 } from '../../util/navigations'
-import { Button } from '@mui/material'
+import { Button, Paper, TextField } from '@mui/material'
 import { TOUR_DETAILS_CONST } from '../../constant'
+import { Card } from 'react-bootstrap'
+
 const defaultData = {
   name: '',
   email: '',
@@ -60,59 +61,114 @@ const GuideForm = ({ mode }) => {
   if (guideData === null) return <p>Loading.....</p>
 
   return (
-    <div>
-      <h2>Edit Tour</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor='name'>Guide Name:</label>
-        <input
-          type='text'
-          id='name'
-          name='name'
-          value={guideData.name}
-          disabled={mode === TOUR_DETAILS_CONST.VIEW}
-          onChange={handleChange}
-        />
-
-        <label htmlFor='email'>Guide Email:</label>
-        <input
-          type='email'
-          id='email'
-          name='email'
-          value={guideData.email}
-          disabled={mode === TOUR_DETAILS_CONST.VIEW}
-          onChange={handleChange}
-        />
-
-        <label htmlFor='contactNumber'>Guide ContactNumber:</label>
-        <input
-          type='text'
-          id='contactNumber'
-          name='contactNumber'
-          value={guideData.contactNumber}
-          disabled={mode === TOUR_DETAILS_CONST.VIEW}
-          onChange={handleChange}
-        />
-
-        {mode === TOUR_DETAILS_CONST.EDIT && (
-          <>
-            <button type='submit'>Save Changes</button>
-          </>
-        )}
-        {mode === TOUR_DETAILS_CONST.VIEW && (
-          <div style={{ textAlign: 'center' }}>
-            <Button
-              onClick={() => navigateToTourDetailsEdit(navigate, guideData.id)}
-            >
-              Edit
-            </Button>
-          </div>
-        )}
-        {mode === TOUR_DETAILS_CONST.NEW && (
-          <div style={{ textAlign: 'center' }}>
-            <Button onClick={handleCreateNewTourDetails}>Save</Button>
-          </div>
-        )}
-      </form>
+    <div className='col d-flex justify-content-center'>
+      <Card
+        style={{
+          width: '70%',
+          height: '70%',
+          margin: 'auto',
+          padding: '0px'
+        }}
+      >
+        <Paper elevation={6}>
+          <Card.Body style={{ padding: '5px 15px 15px 15px', margin: '0px' }}>
+            <h2>Edit Guide Information</h2>
+            <form onSubmit={handleSubmit}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 5,
+                  width: '60%',
+                  minWidth: '400px',
+                  margin: 'auto'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <label htmlFor='name' style={{ margin: 'auto auto' }}>
+                    Guide Name:
+                  </label>
+                  <TextField
+                    type='text'
+                    id='name'
+                    name='name'
+                    value={guideData.name}
+                    disabled={mode === TOUR_DETAILS_CONST.VIEW}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div style={{ display: 'flex' }}>
+                  <label htmlFor='email' style={{ margin: 'auto auto' }}>
+                    Guide Email:
+                  </label>
+                  <TextField
+                    type='email'
+                    id='email'
+                    name='email'
+                    value={guideData.email}
+                    disabled={mode === TOUR_DETAILS_CONST.VIEW}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div style={{ display: 'flex' }}>
+                  <label
+                    htmlFor='contactNumber'
+                    style={{ margin: 'auto auto' }}
+                  >
+                    Guide ContactNumber:
+                  </label>
+                  <TextField
+                    type='text'
+                    id='contactNumber'
+                    name='contactNumber'
+                    value={guideData.contactNumber}
+                    disabled={mode === TOUR_DETAILS_CONST.VIEW}
+                    onChange={handleChange}
+                  />
+                </div>
+                {mode === TOUR_DETAILS_CONST.EDIT && (
+                  <div
+                    style={{
+                      margin: '15px',
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <Button
+                      variant='contained'
+                      style={{
+                        width: '150px',
+                        margin: 'auto',
+                        textAlign: 'center',
+                        padding: '10px'
+                      }}
+                      type='submit'
+                    >
+                      Save Changes
+                    </Button>
+                  </div>
+                )}
+                {mode === TOUR_DETAILS_CONST.VIEW && (
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button
+                      onClick={() =>
+                        navigateToTourDetailsEdit(navigate, guideData.id)
+                      }
+                    >
+                      Edit
+                    </Button>
+                  </div>
+                )}
+                {mode === TOUR_DETAILS_CONST.NEW && (
+                  <div style={{ textAlign: 'center' }}>
+                    <Button onClick={handleCreateNewTourDetails}>Save</Button>
+                  </div>
+                )}
+              </div>
+            </form>
+          </Card.Body>
+        </Paper>
+      </Card>
     </div>
   )
 }

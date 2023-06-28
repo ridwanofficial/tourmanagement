@@ -12,18 +12,20 @@ import TourForm from './components/admin/TourForm'
 import TourList from './components/admin/TourList'
 import GuideList from './components/admin/GuideList'
 import GuideForm from './components/admin/GuideForm'
+import Navbar from './components/NavBar'
+import RoutesPath from './RoutesPath'
 
 function App () {
   return (
     <BrowserRouter>
       <div>
-        <Sidebar />
+        <Navbar />
         <Routes>
           <Route exact path='/' element={<RecentTours />} />
-          <Route exact path='/tour/:id' element={<SingleTour />} />
-          <Route exact path='/admin' element={<Admin />} />
-          <Route exact path={`admin/tours`} element={<TourList />} />
-          <Route exact path={`admin/guides`} element={<GuideList />} />
+          <Route exact path={RoutesPath.singleTour} element={<SingleTour />} />
+          <Route exact path={RoutesPath.adminDashboard} element={<Admin />} />
+          <Route exact path={RoutesPath.adminTours} element={<TourList />} />
+          <Route exact path={RoutesPath.adminGuides} element={<GuideList />} />
           <Route
             exact
             path={`admin/tour-details`}
