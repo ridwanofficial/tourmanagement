@@ -58,3 +58,7 @@ export const TOUR_DETAILS_CONST = {
   VIEW: 1,
   EDIT: 2
 }
+export const DHAKA_ZERO_POINT = {
+  lat: 23.727683,
+  lng: 90.410567
+}

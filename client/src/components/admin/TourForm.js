@@ -10,6 +10,7 @@ import {
 import { Menu, MenuItem, Paper, Select, TextField } from '@mui/material'
 import { formatDate } from '../../util/helperFunctions'
 import { Card } from 'react-bootstrap'
+import ChooseBoardingPoint from '../ChooseBoardingPoint'
 
 const TourForm = () => {
   const [tourId, setTourId] = useState(1)
@@ -27,6 +28,14 @@ const TourForm = () => {
     guideId: 0,
     tourDetailsId: 0
   })
+  function setBoardingPoint (val) {
+    setFormValues(prevValues => ({
+      ...prevValues,
+      boardingPointLat: val.lat,
+      boardingPointLng: val.lng
+    }))
+  }
+
   console.log('formValues:', formValues)
 
   // Fetch tour details on component mount
@@ -163,6 +172,13 @@ const TourForm = () => {
                       </MenuItem>
                     ))}
                   </Select>
+                  <ChooseBoardingPoint
+                    boardingPoint={{
+                      lat: formValues?.boardingPointLat,
+                      lng: formValues?.boardingPointLng
+                    }}
+                    setBoardingPoint={setBoardingPoint}
+                  />
                 </label>
                 <button type='submit'>Update Tour</button>
               </div>
