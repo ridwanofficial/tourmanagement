@@ -7,8 +7,9 @@ import {
   updateTour,
   updateTourDetails
 } from '../../api/admin'
-import { TextField } from '@mui/material'
+import { Menu, MenuItem, Paper, Select, TextField } from '@mui/material'
 import { formatDate } from '../../util/helperFunctions'
+import { Card } from 'react-bootstrap'
 
 const TourForm = () => {
   const [tourId, setTourId] = useState(1)
@@ -87,64 +88,89 @@ const TourForm = () => {
     }))
   }
   return (
-    <form onSubmit={handleFormSubmit}>
-      <label>
-        Date:
-        <TextField
-          name='date'
-          type='date'
-          value={formValues?.date || ''}
-          onChange={handleInputChange}
-        />
-        {/* <input
-          type='date'
-          name='date'
-          value={formValues.date}
-          onChange={handleInputChange}
-        /> */}
-      </label>
-      <label>
-        Capacity:
-        <input
-          type='number'
-          name='capacity'
-          value={formValues.capacity}
-          onChange={handleInputChange}
-        />
-      </label>
+    <div className='col d-flex justify-content-center'>
+      <Card
+        style={{
+          width: '70%',
+          height: '70%',
+          margin: 'auto',
+          padding: '0px'
+        }}
+      >
+        <Paper elevation={6}>
+          <Card.Body style={{ padding: '5px 15px 15px 15px', margin: '0px' }}>
+            <form onSubmit={handleFormSubmit}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 5,
+                  width: '60%',
+                  minWidth: '400px',
+                  margin: 'auto'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <label style={{ margin: 'auto auto' }}>Date:</label>
 
-      <label>
-        Guide:
-        <select
-          name='guideId'
-          value={formValues.guideId}
-          onChange={handleInputChange}
-        >
-          {guideData.map(guide => (
-            <option key={guide.id} value={parseInt(guide.id)}>
-              {guide.name}
-            </option>
-          ))}
-        </select>
-      </label>
-      {/* Add more input fields for other form values */}
-      <label>
-        Tour Details:
-        <select
-          typeof='number'
-          name='guideId'
-          value={formValues.tourDetailsId}
-          onChange={handleInputChange}
-        >
-          {tourDetailsData.map(detail => (
-            <option key={detail.guideId} value={parseInt(detail.guideId)}>
-              {detail.name}
-            </option>
-          ))}
-        </select>
-      </label>
-      <button type='submit'>Update Tour</button>
-    </form>
+                  <TextField
+                    name='date'
+                    type='date'
+                    value={formValues?.date || ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <label>
+                    Capacity:
+                    <TextField
+                      type='number'
+                      name='capacity'
+                      value={formValues.capacity}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+                </div>
+                <label>
+                  Guide:
+                  <Select
+                    name='guideId'
+                    value={formValues.guideId}
+                    onChange={handleInputChange}
+                  >
+                    {guideData.map(guide => (
+                      <MenuItem key={guide.id} value={parseInt(guide.id)}>
+                        {guide.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </label>
+                {/* Add more input fields for other form values */}
+                <label>
+                  Tour Details:
+                  <Select
+                    typeof='number'
+                    name='guideId'
+                    value={formValues.tourDetailsId}
+                    onChange={handleInputChange}
+                  >
+                    {tourDetailsData.map(detail => (
+                      <MenuItem
+                        key={detail.guideId}
+                        value={parseInt(detail.guideId)}
+                      >
+                        {detail.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </label>
+                <button type='submit'>Update Tour</button>
+              </div>
+            </form>
+          </Card.Body>
+        </Paper>
+      </Card>
+    </div>
   )
 }
 
